@@ -9,8 +9,8 @@ type Review struct {
 	Content   string    `gorm:"type:text" json:"content"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
-	User      User      `gorm:"foreignKey:UserID" json:"user"`
-	Recipe    Recipe    `gorm:"foreignKey:RecipeID" json:"recipe"`
+	User      User      `gorm:"foreignKey:UserID" json:"user" swaggerignore:"true"`
+	Recipe    Recipe    `gorm:"foreignKey:RecipeID" json:"review" swaggerignore:"true"`
 }
 
 type ReviewRequest struct {
@@ -27,4 +27,5 @@ type ReviewResponse struct {
 	CreatedAt time.Time    `json:"created_at"`
 	UpdatedAt time.Time    `json:"updated_at"`
 	User      UserResponse `gorm:"foreignKey:UserID" json:"user"`
+	Recipe    Recipe       `gorm:"foreignKey:RecipeID" json:"recipe"`
 }

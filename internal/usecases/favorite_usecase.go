@@ -6,17 +6,31 @@ import (
 	"time"
 )
 
-type FavoriteUsecase struct {
+type FavoriteUsecase interface {
+	GetByUserID(userID uint) ([]*models.Favorite, error)
+	CreateFavorite(userID, recipeID uint) (*models.Favorite, error)
+	DeleteFavorite(id uint) error
+}
+
+type favoriteUsecase struct {
 	FavoriteRepository repositories.FavoriteRepository
 }
 
-func NewFavoriteUsecase(favoriteRepo repositories.FavoriteRepository) *FavoriteUsecase {
-	return &FavoriteUsecase{
+func NewFavoriteUsecase(favoriteRepo repositories.FavoriteRepository) FavoriteUsecase {
+	return &favoriteUsecase{
 		FavoriteRepository: favoriteRepo,
 	}
 }
 
-func (uc *FavoriteUsecase) CreateFavorite(userID, recipeID uint) (*models.Favorite, error) {
+func (uc *favoriteUsecase) GetByUserID(userID uint) ([]*models.Favorite, error) {
+	favorites, err := uc.FavoriteRepository.GetByUserID(userID)
+	if err != nil {
+		return nil, err
+	}
+	return favorites, nil
+}
+
+func (uc *favoriteUsecase) CreateFavorite(userID, recipeID uint) (*models.Favorite, error) {
 	favorite := &models.Favorite{
 		UserID:    userID,
 		RecipeID:  recipeID,
@@ -31,7 +45,7 @@ func (uc *FavoriteUsecase) CreateFavorite(userID, recipeID uint) (*models.Favori
 	return favorite, nil
 }
 
-func (uc *FavoriteUsecase) DeleteFavorite(id uint) error {
+func (uc *favoriteUsecase) DeleteFavorite(id uint) error {
 	if id == 0 {
 		return nil
 	}

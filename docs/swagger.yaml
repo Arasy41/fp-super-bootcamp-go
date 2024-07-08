@@ -1,0 +1,972 @@
+basePath: /api
+definitions:
+  controllers.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  models.Favorite:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      recipe_id:
+        type: integer
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  models.FavoriteRequest:
+    properties:
+      recipe_id:
+        type: integer
+      user_id:
+        type: integer
+    required:
+    - recipe_id
+    - user_id
+    type: object
+  models.Image:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      recipe_id:
+        type: integer
+      updated_at:
+        type: string
+      url:
+        type: string
+    type: object
+  models.InputChangePassword:
+    properties:
+      new_password:
+        type: string
+      old_password:
+        type: string
+    required:
+    - new_password
+    - old_password
+    type: object
+  models.LoginInput:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  models.Profile:
+    properties:
+      avatar_url:
+        type: string
+      bio:
+        type: string
+      created_at:
+        type: string
+      full_name:
+        type: string
+      id:
+        type: integer
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  models.Recipe:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      images:
+        items:
+          $ref: '#/definitions/models.Image'
+        type: array
+      ingredients:
+        type: string
+      instructions:
+        type: string
+      tags:
+        items:
+          $ref: '#/definitions/models.Tag'
+        type: array
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.Review:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      recipe_id:
+        type: integer
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  models.ReviewRequest:
+    properties:
+      content:
+        type: string
+      recipe_id:
+        type: integer
+      user_id:
+        type: integer
+    required:
+    - content
+    - recipe_id
+    - user_id
+    type: object
+  models.Tag:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      recipes:
+        items:
+          $ref: '#/definitions/models.Recipe'
+        type: array
+      updated_at:
+        type: string
+    type: object
+  models.TagRequest:
+    properties:
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  models.TagResponse:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  models.UserRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - password
+    - username
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server for culinary review API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: API Culinary Review
+  version: "1.0"
+paths:
+  /change-password:
+    put:
+      consumes:
+      - application/json
+      description: Change the password for the authenticated user
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Change Password Data
+        in: body
+        name: password
+        required: true
+        schema:
+          $ref: '#/definitions/models.InputChangePassword'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Change user password
+      tags:
+      - users
+  /detail-user:
+    get:
+      consumes:
+      - application/json
+      description: Get user information by user ID
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Get user by ID
+      tags:
+      - users
+  /favorites:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new favorite for a user with the specified recipe ID.
+      parameters:
+      - description: Favorite data to create
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.FavoriteRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Favorite'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      summary: Create a new favorite
+      tags:
+      - favorites
+  /favorites/{id}:
+    delete:
+      description: Deletes a favorite by its ID.
+      parameters:
+      - description: Favorite ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Favorite deleted successfully
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      summary: Delete a favorite by ID
+      tags:
+      - favorites
+  /favorites/{user_id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves favorites associated with the specified user ID.
+      parameters:
+      - description: User ID
+        in: path
+        name: user_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Favorite'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      summary: Retrieve favorites by user ID
+      tags:
+      - favorites
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user and get a JWT token
+      parameters:
+      - description: Login Data
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: User login
+      tags:
+      - users
+  /profile:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Create a new user profile
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Full Name
+        in: formData
+        name: fullName
+        required: true
+        type: string
+      - description: Bio
+        in: formData
+        name: bio
+        required: true
+        type: string
+      - description: Avatar File
+        in: formData
+        name: avatar
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Profile'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new profile
+      tags:
+      - profiles
+    put:
+      consumes:
+      - multipart/form-data
+      description: Update the profile of the authenticated user
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Full Name
+        in: formData
+        name: fullName
+        required: true
+        type: string
+      - description: Bio
+        in: formData
+        name: bio
+        required: true
+        type: string
+      - description: Avatar File
+        in: formData
+        name: avatar
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Update profile by user ID
+      tags:
+      - profiles
+  /profile/me:
+    get:
+      consumes:
+      - application/json
+      description: Get the profile of the authenticated user
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Profile'
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Get profile by user ID
+      tags:
+      - profiles
+  /recipes:
+    get:
+      description: Retrieves all recipes.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Recipe'
+            type: array
+      summary: Get all recipes
+      tags:
+      - recipes
+    post:
+      consumes:
+      - multipart/form-data
+      description: Creates a new recipe with the provided details.
+      parameters:
+      - description: Title of the recipe
+        in: formData
+        name: title
+        required: true
+        type: string
+      - description: Description of the recipe
+        in: formData
+        name: description
+        required: true
+        type: string
+      - description: Ingredients of the recipe
+        in: formData
+        name: ingredients
+        required: true
+        type: string
+      - description: Instructions of the recipe
+        in: formData
+        name: instructions
+        required: true
+        type: string
+      - description: Images of the recipe
+        in: formData
+        name: images
+        required: true
+        type: file
+      - description: Tag names in JSON array format
+        in: formData
+        name: tag_names
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Recipe'
+      summary: Create a new recipe
+      tags:
+      - recipes
+  /recipes/{id}:
+    delete:
+      description: Deletes a recipe by ID.
+      parameters:
+      - description: Recipe ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      summary: Delete a recipe
+      tags:
+      - recipes
+    get:
+      description: Retrieves a recipe by its ID.
+      parameters:
+      - description: Recipe ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Recipe'
+      summary: Get a recipe by ID
+      tags:
+      - recipes
+    put:
+      consumes:
+      - multipart/form-data
+      description: Updates an existing recipe with the provided details.
+      parameters:
+      - description: Recipe ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Title of the recipe
+        in: formData
+        name: title
+        required: true
+        type: string
+      - description: Description of the recipe
+        in: formData
+        name: description
+        required: true
+        type: string
+      - description: Ingredients of the recipe
+        in: formData
+        name: ingredients
+        required: true
+        type: string
+      - description: Instructions of the recipe
+        in: formData
+        name: instructions
+        required: true
+        type: string
+      - description: Images of the recipe
+        in: formData
+        name: images
+        required: true
+        type: file
+      - description: Tag names in JSON array format
+        in: formData
+        name: tag_names
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Recipe'
+      summary: Update an existing recipe
+      tags:
+      - recipes
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user account
+      parameters:
+      - description: User Data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Register a new user
+      tags:
+      - users
+  /reviews:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all reviews
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Review'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get all reviews
+      tags:
+      - reviews
+    post:
+      consumes:
+      - application/json
+      description: Create a new review for a recipe
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Review Request
+        in: body
+        name: review
+        required: true
+        schema:
+          $ref: '#/definitions/models.ReviewRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Review'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new review
+      tags:
+      - reviews
+  /reviews/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a review by its ID
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Review ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Delete review by ID
+      tags:
+      - reviews
+    get:
+      consumes:
+      - application/json
+      description: Get a review by its ID
+      parameters:
+      - description: Review ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Review'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get review by ID
+      tags:
+      - reviews
+    put:
+      consumes:
+      - application/json
+      description: Update an existing review by its ID
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Review ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Review Request
+        in: body
+        name: review
+        required: true
+        schema:
+          $ref: '#/definitions/models.ReviewRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Update review by ID
+      tags:
+      - reviews
+  /tags:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new tag with the provided name.
+      parameters:
+      - description: Tag data to create
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.TagRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.TagResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      summary: Create a new tag
+      tags:
+      - tags
+  /tags/{id}:
+    delete:
+      description: Deletes a tag by its ID.
+      parameters:
+      - description: Tag ID to delete
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Tag deleted successfully
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      summary: Delete a tag by ID
+      tags:
+      - tags
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing tag based on the provided data.
+      parameters:
+      - description: Tag ID to update
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated tag data
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.TagRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Tag updated successfully
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      summary: Update an existing tag
+      tags:
+      - tags
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

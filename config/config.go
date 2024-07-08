@@ -1,6 +1,7 @@
 package config
 
 import (
+	"api-culinary-review/pkg/helper"
 	"log"
 	"os"
 
@@ -18,12 +19,19 @@ type Config struct {
 	SupabaseKey    string
 	SupabaseBucket string
 	CloudinaryURL  string
+	Env            string
 }
 
 func LoadConfig() *Config {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
+	// for load godotenv
+	// for env
+	environment := helper.Getenv("ENVIRONMENT", "development")
+
+	if environment == "development" {
+		err := godotenv.Load()
+		if err != nil {
+			log.Fatal("Error loading .env file")
+		}
 	}
 
 	return &Config{
@@ -37,5 +45,6 @@ func LoadConfig() *Config {
 		SupabaseKey:    os.Getenv("SUPABASE_KEY"),
 		SupabaseBucket: os.Getenv("SUPABASE_BUCKET"),
 		CloudinaryURL:  os.Getenv("CLOUDINARY_URL"),
+		Env:            os.Getenv("ENVIRONMENT"),
 	}
 }

@@ -1,5 +1,3 @@
-// internal/models/favorite.go
-
 package models
 
 import "time"

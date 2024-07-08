@@ -3,7 +3,7 @@ package repositories
 import (
 	"api-culinary-review/internal/models"
 
-	"gorm.io/gorm"
+	"github.com/jinzhu/gorm"
 )
 
 type UserRepository interface {

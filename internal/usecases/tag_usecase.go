@@ -5,17 +5,24 @@ import (
 	"api-culinary-review/internal/repositories"
 )
 
-type TagUsecase struct {
+type TagUsecase interface {
+	CreateTag(name string) (*models.Tag, error)
+	GetTagsByNames(tagNames []string) ([]models.Tag, error)
+	UpdateTag(tag *models.Tag) error
+	DeleteTag(id uint) error
+}
+
+type tagUsecase struct {
 	TagRepository repositories.TagRepository
 }
 
-func NewTagUsecase(tagRepo repositories.TagRepository) *TagUsecase {
-	return &TagUsecase{
+func NewtagUsecase(tagRepo repositories.TagRepository) TagUsecase {
+	return &tagUsecase{
 		TagRepository: tagRepo,
 	}
 }
 
-func (uc *TagUsecase) CreateTag(name string) (*models.Tag, error) {
+func (uc *tagUsecase) CreateTag(name string) (*models.Tag, error) {
 	tag := &models.Tag{
 		Name: name,
 	}
@@ -28,15 +35,15 @@ func (uc *TagUsecase) CreateTag(name string) (*models.Tag, error) {
 	return tag, nil
 }
 
-func (uc *TagUsecase) GetTagByName(name string) (*models.Tag, error) {
-	return uc.TagRepository.FindByName(name)
+func (uc *tagUsecase) GetTagsByNames(tagNames []string) ([]models.Tag, error) {
+	return uc.TagRepository.GetTagsByNames(tagNames)
 }
 
-func (uc *TagUsecase) UpdateTag(tag *models.Tag) error {
+func (uc *tagUsecase) UpdateTag(tag *models.Tag) error {
 	return uc.TagRepository.Update(tag)
 }
 
-func (uc *TagUsecase) DeleteTag(id uint) error {
+func (uc *tagUsecase) DeleteTag(id uint) error {
 	// Implement deletion logic as needed
 	return uc.TagRepository.Delete(id)
 }

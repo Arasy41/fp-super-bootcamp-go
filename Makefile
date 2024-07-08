@@ -25,6 +25,12 @@ clean:
 	@echo "Cleaning build artifacts..."
 	rm -f bin/$(BINARY_NAME)
 
+#  Init Swagger
+swagger:
+	@echo "Generating swagger docs..."
+	swag init -g cmd/api/main.go
+
+# 
 # Run tests
 test:
 	@echo "Running tests..."

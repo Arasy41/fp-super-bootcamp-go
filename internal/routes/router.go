@@ -6,12 +6,27 @@ import (
 	"api-culinary-review/internal/repositories"
 	"api-culinary-review/internal/usecases"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
+	"github.com/jinzhu/gorm"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func SetupRouter(db *gorm.DB) *gin.Engine {
 	router := gin.Default()
+
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowAllOrigins = true
+	corsConfig.AllowHeaders = []string{"Content-Type", "X-XSRF-TOKEN", "Accept", "Origin", "X-Requested-With", "Authorization"}
+
+	// To be able to send tokens to the server.
+	corsConfig.AllowCredentials = true
+	// OPTIONS method for ReactJS
+	corsConfig.AddAllowMethods("OPTIONS")
+
+	router.Use(cors.New(corsConfig))
 
 	userRepo := repositories.NewUserRepository(db)
 	userUc := usecases.NewUserUsecase(userRepo)
@@ -21,13 +36,21 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	profileUc := usecases.NewProfileUsecase(profileRepo)
 	profileCtrl := controllers.NewProfileController(profileUc)
 
+	tagRepo := repositories.NewTagRepository(db)
+	tagUc := usecases.NewtagUsecase(tagRepo)
+	tagCtrl := controllers.NewTagController(tagUc)
+
 	recipeRepo := repositories.NewRecipeRepository(db)
 	recipeUc := usecases.NewRecipeUsecase(recipeRepo)
-	recipeCtrl := controllers.NewRecipeController(recipeUc)
+	recipeCtrl := controllers.NewRecipeController(recipeUc, tagUc)
 
 	reviewRepo := repositories.NewReviewRepository(db)
 	reviewUc := usecases.NewReviewUsecase(reviewRepo)
 	reviewCtrl := controllers.NewReviewController(reviewUc)
+
+	favoriteRepo := repositories.NewFavoriteRepository(db)
+	favoriteUc := usecases.NewFavoriteUsecase(favoriteRepo)
+	favoriteCtrl := controllers.NewFavoriteController(favoriteUc)
 
 	authGroup := router.Group("/api")
 	authGroup.Use(middlewares.JWTAuthMiddleware())
@@ -36,20 +59,28 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 		authGroup.PUT("/change-password", userCtrl.ChangePassword)
 
 		authGroup.POST("/profile", profileCtrl.CreateProfile)
-		authGroup.GET("/profile", profileCtrl.GetProfileByUserID)
+		authGroup.GET("/profile/me", profileCtrl.GetProfileByUserID)
 		authGroup.PUT("/profile", profileCtrl.UpdateProfileByUserID)
 
-		authGroup.GET("/recipes", recipeCtrl.GetAllRecipes)
+		authGroup.GET("/recipes", recipeCtrl.GetRecipes)
 		authGroup.GET("/recipes/:id", recipeCtrl.GetRecipeByID)
 		authGroup.POST("/recipes", recipeCtrl.CreateRecipe)
-		authGroup.PUT("/recipes/:id", recipeCtrl.UpdateRecipeByID)
-		authGroup.DELETE("/recipes/:id", recipeCtrl.DeleteRecipeByID)
+		authGroup.PUT("/recipes/:id", recipeCtrl.UpdateRecipe)
+		authGroup.DELETE("/recipes/:id", recipeCtrl.DeleteRecipe)
 
 		authGroup.GET("/reviews", reviewCtrl.GetAllReviews)
 		authGroup.GET("/reviews/:id", reviewCtrl.GetReviewByID)
 		authGroup.POST("/reviews", reviewCtrl.CreateReview)
 		authGroup.PUT("/reviews/:id", reviewCtrl.UpdateReviewByID)
 		authGroup.DELETE("/reviews/:id", reviewCtrl.DeleteReviewByID)
+
+		authGroup.POST("/favorite-recipe", favoriteCtrl.CreateFavorite)
+		authGroup.GET("/favorite-recipe", favoriteCtrl.GetByUserID)
+		authGroup.DELETE("/favorite-recipe", favoriteCtrl.DeleteFavorite)
+
+		authGroup.POST("tags", tagCtrl.CreateTag)
+		authGroup.PUT("/tags/:id", tagCtrl.UpdateTag)
+		authGroup.DELETE("/tags/:id", tagCtrl.DeleteTag)
 	}
 
 	publicGroup := router.Group("/api")
@@ -57,6 +88,8 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 		publicGroup.POST("/register", userCtrl.Register)
 		publicGroup.POST("/login", userCtrl.Login)
 	}
+
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	return router
 }
