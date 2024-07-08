@@ -21,7 +21,7 @@ import (
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host unsightly-delores-arasycorp-a5cc0ffe.koyeb.app/
+// @host religious-mitzi-arasycorp-cc5d6628.koyeb.app/api
 // @BasePath /api
 
 // @securityDefinitions.apikey ApiKeyAuth

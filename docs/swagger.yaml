@@ -173,7 +173,7 @@ definitions:
     - password
     - username
     type: object
-host: unsightly-delores-arasycorp-a5cc0ffe.koyeb.app/
+host: religious-mitzi-arasycorp-cc5d6628.koyeb.app/api
 info:
   contact:
     email: support@swagger.io

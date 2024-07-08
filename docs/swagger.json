@@ -15,7 +15,7 @@
         },
         "version": "1.0"
     },
-    "host": "unsightly-delores-arasycorp-a5cc0ffe.koyeb.app/",
+    "host": "religious-mitzi-arasycorp-cc5d6628.koyeb.app/api",
     "basePath": "/api",
     "paths": {
         "/change-password": {
