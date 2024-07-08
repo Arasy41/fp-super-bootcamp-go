@@ -1,6 +1,6 @@
 module api-culinary-review
 
-go 1.20.0
+go 1.20
 
 require (
 	github.com/adityarizkyramadhan/supabase-storage-uploader v1.0.0
