@@ -37,7 +37,7 @@ func main() {
 	docs.SwaggerInfo.Title = "Movie REST API"
 	docs.SwaggerInfo.Description = "This is REST API Movie."
 	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = helper.Getenv("HOST", "localhost:8080")
+	docs.SwaggerInfo.Host = helper.Getenv("HOST", "religious-mitzi-arasycorp-cc5d6628.koyeb.app")
 	if environment == "development" {
 		docs.SwaggerInfo.Schemes = []string{"http", "https"}
 	} else {
