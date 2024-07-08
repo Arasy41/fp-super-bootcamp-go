@@ -37,7 +37,7 @@ func NewTagController(tagUsecase usecases.TagUsecase) TagController {
 // @Success 201 {object} models.TagResponse
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /tags [post]
+// @Router /api/tags [post]
 func (ctrl *tagController) CreateTag(c *gin.Context) {
 	var tagInput models.TagRequest
 	if err := c.ShouldBindJSON(&tagInput); err != nil {
@@ -65,7 +65,7 @@ func (ctrl *tagController) CreateTag(c *gin.Context) {
 // @Success 200 {string} string "Tag updated successfully"
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /tags/{id} [put]
+// @Router /api/tags/{id} [put]
 func (ctrl *tagController) UpdateTag(c *gin.Context) {
 	tagID := c.Param("id")
 	var tagInput models.TagRequest
@@ -103,7 +103,7 @@ func (ctrl *tagController) UpdateTag(c *gin.Context) {
 // @Success 200 {string} string "Tag deleted successfully"
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /tags/{id} [delete]
+// @Router /api/tags/{id} [delete]
 func (ctrl *tagController) DeleteTag(c *gin.Context) {
 	tagID := c.Param("id")
 	id, err := strconv.ParseUint(tagID, 10, 64)

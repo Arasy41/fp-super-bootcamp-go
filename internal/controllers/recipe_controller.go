@@ -47,7 +47,7 @@ func NewRecipeController(recipeUsecase usecases.RecipeUsecase, tagUsecase usecas
 // @Param images formData file true "Images of the recipe"
 // @Param tag_names formData string true "Tag names in JSON array format"
 // @Success 201 {object} models.Recipe
-// @Router /recipes [post]
+// @Router /api/recipes [post]
 func (c *recipeController) CreateRecipe(ctx *gin.Context) {
 	recipeRequest := &models.RecipeRequest{}
 
@@ -127,7 +127,7 @@ func (c *recipeController) CreateRecipe(ctx *gin.Context) {
 // @Param images formData file true "Images of the recipe"
 // @Param tag_names formData string true "Tag names in JSON array format"
 // @Success 200 {object} models.Recipe
-// @Router /recipes/{id} [put]
+// @Router /api/recipes/{id} [put]
 func (c *recipeController) UpdateRecipe(ctx *gin.Context) {
 	id, err := strconv.ParseUint(ctx.Param("id"), 10, 64)
 	if err != nil {
@@ -187,7 +187,7 @@ func (c *recipeController) UpdateRecipe(ctx *gin.Context) {
 // @Produce json
 // @Param id path int true "Recipe ID"
 // @Success 204 {object} nil
-// @Router /recipes/{id} [delete]
+// @Router /api/recipes/{id} [delete]
 func (c *recipeController) DeleteRecipe(ctx *gin.Context) {
 	id, err := strconv.ParseUint(ctx.Param("id"), 10, 64)
 	if err != nil {
@@ -213,7 +213,7 @@ func (c *recipeController) DeleteRecipe(ctx *gin.Context) {
 // @Produce json
 // @Param id path int true "Recipe ID"
 // @Success 200 {object} models.Recipe
-// @Router /recipes/{id} [get]
+// @Router /api/recipes/{id} [get]
 func (c *recipeController) GetRecipeByID(ctx *gin.Context) {
 	id, err := strconv.ParseUint(ctx.Param("id"), 10, 64)
 	if err != nil {
@@ -236,7 +236,7 @@ func (c *recipeController) GetRecipeByID(ctx *gin.Context) {
 // @Tags recipes
 // @Produce json
 // @Success 200 {object} []models.Recipe
-// @Router /recipes [get]
+// @Router /api/recipes [get]
 func (c *recipeController) GetRecipes(ctx *gin.Context) {
 	recipes, err := c.recipeUsecase.GetRecipes()
 	if err != nil {

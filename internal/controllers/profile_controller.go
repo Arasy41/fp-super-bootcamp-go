@@ -40,7 +40,7 @@ func NewProfileController(usecase usecases.ProfileUsecase) ProfileController {
 // @Failure 401 {object} map[string]interface{}
 // @Failure 500 {object} map[string]interface{}
 // @Security ApiKeyAuth
-// @Router /profile [post]
+// @Router /api/profile [post]
 func (ctrl *profileController) CreateProfile(c *gin.Context) {
 	fullName := c.PostForm("fullName")
 	bio := c.PostForm("bio")
@@ -92,7 +92,7 @@ func (ctrl *profileController) CreateProfile(c *gin.Context) {
 // @Failure 401 {object} map[string]interface{}
 // @Failure 500 {object} map[string]interface{}
 // @Security ApiKeyAuth
-// @Router /profile/me [get]
+// @Router /api/profile/me [get]
 func (ctrl *profileController) GetProfileByUserID(c *gin.Context) {
 	userID := c.GetUint("userID")
 	profile, err := ctrl.uc.GetProfileByUserID(userID)
@@ -119,7 +119,7 @@ func (ctrl *profileController) GetProfileByUserID(c *gin.Context) {
 // @Failure 401 {object} map[string]interface{}
 // @Failure 500 {object} map[string]interface{}
 // @Security ApiKeyAuth
-// @Router /profile [put]
+// @Router /api/profile [put]
 func (ctrl *profileController) UpdateProfileByUserID(c *gin.Context) {
 	fullName := c.PostForm("fullName")
 	bio := c.PostForm("bio")

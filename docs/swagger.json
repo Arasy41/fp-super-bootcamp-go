@@ -15,10 +15,10 @@
         },
         "version": "1.0"
     },
-    "host": "religious-mitzi-arasycorp-cc5d6628.koyeb.app/api",
+    "host": "religious-mitzi-arasycorp-cc5d6628.koyeb.app",
     "basePath": "/api",
     "paths": {
-        "/change-password": {
+        "/api/change-password": {
             "put": {
                 "security": [
                     {
@@ -86,7 +86,7 @@
                 }
             }
         },
-        "/detail-user": {
+        "/api/detail-user": {
             "get": {
                 "security": [
                     {
@@ -138,7 +138,7 @@
                 }
             }
         },
-        "/favorites": {
+        "/api/favorites": {
             "post": {
                 "description": "Creates a new favorite for a user with the specified recipe ID.",
                 "consumes": [
@@ -184,7 +184,7 @@
                 }
             }
         },
-        "/favorites/{id}": {
+        "/api/favorites/{id}": {
             "delete": {
                 "description": "Deletes a favorite by its ID.",
                 "tags": [
@@ -222,7 +222,7 @@
                 }
             }
         },
-        "/favorites/{user_id}": {
+        "/api/favorites/{user_id}": {
             "get": {
                 "description": "Retrieves favorites associated with the specified user ID.",
                 "consumes": [
@@ -269,7 +269,7 @@
                 }
             }
         },
-        "/login": {
+        "/api/login": {
             "post": {
                 "description": "Authenticate user and get a JWT token",
                 "consumes": [
@@ -325,7 +325,7 @@
                 }
             }
         },
-        "/profile": {
+        "/api/profile": {
             "put": {
                 "security": [
                     {
@@ -482,7 +482,7 @@
                 }
             }
         },
-        "/profile/me": {
+        "/api/profile/me": {
             "get": {
                 "security": [
                     {
@@ -533,7 +533,7 @@
                 }
             }
         },
-        "/recipes": {
+        "/api/recipes": {
             "get": {
                 "description": "Retrieves all recipes.",
                 "produces": [
@@ -621,7 +621,7 @@
                 }
             }
         },
-        "/recipes/{id}": {
+        "/api/recipes/{id}": {
             "get": {
                 "description": "Retrieves a recipe by its ID.",
                 "produces": [
@@ -746,7 +746,7 @@
                 }
             }
         },
-        "/register": {
+        "/api/register": {
             "post": {
                 "description": "Create a new user account",
                 "consumes": [
@@ -795,7 +795,7 @@
                 }
             }
         },
-        "/reviews": {
+        "/api/reviews": {
             "get": {
                 "description": "Get a list of all reviews",
                 "consumes": [
@@ -893,7 +893,7 @@
                 }
             }
         },
-        "/reviews/{id}": {
+        "/api/reviews/{id}": {
             "get": {
                 "description": "Get a review by its ID",
                 "consumes": [
@@ -1048,7 +1048,7 @@
                 }
             }
         },
-        "/tags": {
+        "/api/tags": {
             "post": {
                 "description": "Creates a new tag with the provided name.",
                 "consumes": [
@@ -1094,7 +1094,7 @@
                 }
             }
         },
-        "/tags/{id}": {
+        "/api/tags/{id}": {
             "put": {
                 "description": "Updates an existing tag based on the provided data.",
                 "consumes": [

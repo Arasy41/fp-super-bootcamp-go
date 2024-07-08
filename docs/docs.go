@@ -25,7 +25,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/change-password": {
+        "/api/change-password": {
             "put": {
                 "security": [
                     {
@@ -93,7 +93,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/detail-user": {
+        "/api/detail-user": {
             "get": {
                 "security": [
                     {
@@ -145,7 +145,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/favorites": {
+        "/api/favorites": {
             "post": {
                 "description": "Creates a new favorite for a user with the specified recipe ID.",
                 "consumes": [
@@ -191,7 +191,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/favorites/{id}": {
+        "/api/favorites/{id}": {
             "delete": {
                 "description": "Deletes a favorite by its ID.",
                 "tags": [
@@ -229,7 +229,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/favorites/{user_id}": {
+        "/api/favorites/{user_id}": {
             "get": {
                 "description": "Retrieves favorites associated with the specified user ID.",
                 "consumes": [
@@ -276,7 +276,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/login": {
+        "/api/login": {
             "post": {
                 "description": "Authenticate user and get a JWT token",
                 "consumes": [
@@ -332,7 +332,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/profile": {
+        "/api/profile": {
             "put": {
                 "security": [
                     {
@@ -489,7 +489,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/profile/me": {
+        "/api/profile/me": {
             "get": {
                 "security": [
                     {
@@ -540,7 +540,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/recipes": {
+        "/api/recipes": {
             "get": {
                 "description": "Retrieves all recipes.",
                 "produces": [
@@ -628,7 +628,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/recipes/{id}": {
+        "/api/recipes/{id}": {
             "get": {
                 "description": "Retrieves a recipe by its ID.",
                 "produces": [
@@ -753,7 +753,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/register": {
+        "/api/register": {
             "post": {
                 "description": "Create a new user account",
                 "consumes": [
@@ -802,7 +802,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/reviews": {
+        "/api/reviews": {
             "get": {
                 "description": "Get a list of all reviews",
                 "consumes": [
@@ -900,7 +900,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/reviews/{id}": {
+        "/api/reviews/{id}": {
             "get": {
                 "description": "Get a review by its ID",
                 "consumes": [
@@ -1055,7 +1055,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/tags": {
+        "/api/tags": {
             "post": {
                 "description": "Creates a new tag with the provided name.",
                 "consumes": [
@@ -1101,7 +1101,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/tags/{id}": {
+        "/api/tags/{id}": {
             "put": {
                 "description": "Updates an existing tag based on the provided data.",
                 "consumes": [
@@ -1468,7 +1468,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "religious-mitzi-arasycorp-cc5d6628.koyeb.app/api",
+	Host:             "religious-mitzi-arasycorp-cc5d6628.koyeb.app",
 	BasePath:         "/api",
 	Schemes:          []string{},
 	Title:            "API Culinary Review",

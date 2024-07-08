@@ -37,7 +37,7 @@ func NewFavoriteController(favoriteUC usecases.FavoriteUsecase) FavoriteControll
 // @Success 200 {array} models.Favorite
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /favorites/{user_id} [get]
+// @Router /api/favorites/{user_id} [get]
 func (ctrl *favoriteController) GetByUserID(c *gin.Context) {
 	userIDStr := c.Param("user_id")
 	userID, err := strconv.ParseUint(userIDStr, 10, 32)
@@ -65,7 +65,7 @@ func (ctrl *favoriteController) GetByUserID(c *gin.Context) {
 // @Success 201 {object} models.Favorite
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /favorites [post]
+// @Router /api/favorites [post]
 func (ctrl *favoriteController) CreateFavorite(c *gin.Context) {
 	var favoriteInput models.FavoriteRequest
 	if err := c.ShouldBindJSON(&favoriteInput); err != nil {
@@ -90,7 +90,7 @@ func (ctrl *favoriteController) CreateFavorite(c *gin.Context) {
 // @Success 200 {string} string "Favorite deleted successfully"
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /favorites/{id} [delete]
+// @Router /api/favorites/{id} [delete]
 func (ctrl *favoriteController) DeleteFavorite(c *gin.Context) {
 	idStr := c.Param("id")
 	id, err := strconv.ParseUint(idStr, 10, 32)

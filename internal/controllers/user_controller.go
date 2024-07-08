@@ -39,7 +39,7 @@ func NewUserController(userUC usecases.UserUsecase) UserController {
 // @Success 201 {object} map[string]interface{}
 // @Failure 400 {object} map[string]interface{}
 // @Failure 500 {object} map[string]interface{}
-// @Router /register [post]
+// @Router /api/register [post]
 func (ctrl *userController) Register(c *gin.Context) {
 	var userInput models.UserRequest
 	if err := c.ShouldBindJSON(&userInput); err != nil {
@@ -70,7 +70,7 @@ func (ctrl *userController) Register(c *gin.Context) {
 // @Failure 401 {object} map[string]interface{}
 // @Failure 500 {object} map[string]interface{}
 // @Security ApiKeyAuth
-// @Router /detail-user [get]
+// @Router /api/detail-user [get]
 func (ctrl *userController) GetUserByID(c *gin.Context) {
 	userID := c.GetUint("userID")
 	user, err := ctrl.UserUsecase.GetUserByID(userID)
@@ -92,7 +92,7 @@ func (ctrl *userController) GetUserByID(c *gin.Context) {
 // @Failure 400 {object} map[string]interface{}
 // @Failure 401 {object} map[string]interface{}
 // @Failure 500 {object} map[string]interface{}
-// @Router /login [post]
+// @Router /api/login [post]
 func (ctrl *userController) Login(c *gin.Context) {
 	var input models.LoginInput
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -133,7 +133,7 @@ func (ctrl *userController) Login(c *gin.Context) {
 // @Failure 401 {object} map[string]interface{}
 // @Failure 500 {object} map[string]interface{}
 // @Security ApiKeyAuth
-// @Router /change-password [put]
+// @Router /api/change-password [put]
 func (ctrl *userController) ChangePassword(c *gin.Context) {
 	var input models.InputChangePassword
 	if err := c.ShouldBindJSON(&input); err != nil {

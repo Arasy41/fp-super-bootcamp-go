@@ -173,7 +173,7 @@ definitions:
     - password
     - username
     type: object
-host: religious-mitzi-arasycorp-cc5d6628.koyeb.app/api
+host: religious-mitzi-arasycorp-cc5d6628.koyeb.app
 info:
   contact:
     email: support@swagger.io
@@ -187,7 +187,7 @@ info:
   title: API Culinary Review
   version: "1.0"
 paths:
-  /change-password:
+  /api/change-password:
     put:
       consumes:
       - application/json
@@ -232,7 +232,7 @@ paths:
       summary: Change user password
       tags:
       - users
-  /detail-user:
+  /api/detail-user:
     get:
       consumes:
       - application/json
@@ -266,7 +266,7 @@ paths:
       summary: Get user by ID
       tags:
       - users
-  /favorites:
+  /api/favorites:
     post:
       consumes:
       - application/json
@@ -296,7 +296,7 @@ paths:
       summary: Create a new favorite
       tags:
       - favorites
-  /favorites/{id}:
+  /api/favorites/{id}:
     delete:
       description: Deletes a favorite by its ID.
       parameters:
@@ -321,7 +321,7 @@ paths:
       summary: Delete a favorite by ID
       tags:
       - favorites
-  /favorites/{user_id}:
+  /api/favorites/{user_id}:
     get:
       consumes:
       - application/json
@@ -352,7 +352,7 @@ paths:
       summary: Retrieve favorites by user ID
       tags:
       - favorites
-  /login:
+  /api/login:
     post:
       consumes:
       - application/json
@@ -390,7 +390,7 @@ paths:
       summary: User login
       tags:
       - users
-  /profile:
+  /api/profile:
     post:
       consumes:
       - multipart/form-data
@@ -496,7 +496,7 @@ paths:
       summary: Update profile by user ID
       tags:
       - profiles
-  /profile/me:
+  /api/profile/me:
     get:
       consumes:
       - application/json
@@ -529,7 +529,7 @@ paths:
       summary: Get profile by user ID
       tags:
       - profiles
-  /recipes:
+  /api/recipes:
     get:
       description: Retrieves all recipes.
       produces:
@@ -589,7 +589,7 @@ paths:
       summary: Create a new recipe
       tags:
       - recipes
-  /recipes/{id}:
+  /api/recipes/{id}:
     delete:
       description: Deletes a recipe by ID.
       parameters:
@@ -674,7 +674,7 @@ paths:
       summary: Update an existing recipe
       tags:
       - recipes
-  /register:
+  /api/register:
     post:
       consumes:
       - application/json
@@ -707,7 +707,7 @@ paths:
       summary: Register a new user
       tags:
       - users
-  /reviews:
+  /api/reviews:
     get:
       consumes:
       - application/json
@@ -772,7 +772,7 @@ paths:
       summary: Create a new review
       tags:
       - reviews
-  /reviews/{id}:
+  /api/reviews/{id}:
     delete:
       consumes:
       - application/json
@@ -875,7 +875,7 @@ paths:
       summary: Update review by ID
       tags:
       - reviews
-  /tags:
+  /api/tags:
     post:
       consumes:
       - application/json
@@ -905,7 +905,7 @@ paths:
       summary: Create a new tag
       tags:
       - tags
-  /tags/{id}:
+  /api/tags/{id}:
     delete:
       description: Deletes a tag by its ID.
       parameters:
