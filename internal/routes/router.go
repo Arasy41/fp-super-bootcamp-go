@@ -62,14 +62,10 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 		authGroup.GET("/profile/me", profileCtrl.GetProfileByUserID)
 		authGroup.PUT("/profile", profileCtrl.UpdateProfileByUserID)
 
-		authGroup.GET("/recipes", recipeCtrl.GetRecipes)
-		authGroup.GET("/recipes/:id", recipeCtrl.GetRecipeByID)
 		authGroup.POST("/recipes", recipeCtrl.CreateRecipe)
 		authGroup.PUT("/recipes/:id", recipeCtrl.UpdateRecipe)
 		authGroup.DELETE("/recipes/:id", recipeCtrl.DeleteRecipe)
 
-		authGroup.GET("/reviews", reviewCtrl.GetAllReviews)
-		authGroup.GET("/reviews/:id", reviewCtrl.GetReviewByID)
 		authGroup.POST("/reviews", reviewCtrl.CreateReview)
 		authGroup.PUT("/reviews/:id", reviewCtrl.UpdateReviewByID)
 		authGroup.DELETE("/reviews/:id", reviewCtrl.DeleteReviewByID)
@@ -85,6 +81,10 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 
 	publicGroup := router.Group("/api")
 	{
+		publicGroup.GET("/recipes", recipeCtrl.GetRecipes)
+		publicGroup.GET("/recipes/:id", recipeCtrl.GetRecipeByID)
+		publicGroup.GET("/reviews", reviewCtrl.GetAllReviews)
+		publicGroup.GET("/reviews/:id", reviewCtrl.GetReviewByID)
 		publicGroup.POST("/register", userCtrl.Register)
 		publicGroup.POST("/login", userCtrl.Login)
 	}

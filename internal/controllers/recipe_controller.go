@@ -40,6 +40,7 @@ func NewRecipeController(recipeUsecase usecases.RecipeUsecase, tagUsecase usecas
 // @Tags recipes
 // @Accept multipart/form-data
 // @Produce json
+// @Param Authorization header string true "Bearer Token"
 // @Param title formData string true "Title of the recipe"
 // @Param description formData string true "Description of the recipe"
 // @Param ingredients formData string true "Ingredients of the recipe"
@@ -47,6 +48,7 @@ func NewRecipeController(recipeUsecase usecases.RecipeUsecase, tagUsecase usecas
 // @Param images formData file true "Images of the recipe"
 // @Param tag_names formData string true "Tag names in JSON array format"
 // @Success 201 {object} models.Recipe
+// @Security ApiKeyAuth
 // @Router /api/recipes [post]
 func (c *recipeController) CreateRecipe(ctx *gin.Context) {
 	recipeRequest := &models.RecipeRequest{}
@@ -119,6 +121,7 @@ func (c *recipeController) CreateRecipe(ctx *gin.Context) {
 // @Tags recipes
 // @Accept multipart/form-data
 // @Produce json
+// @Param Authorization header string true "Bearer Token"
 // @Param id path int true "Recipe ID"
 // @Param title formData string true "Title of the recipe"
 // @Param description formData string true "Description of the recipe"
@@ -127,6 +130,7 @@ func (c *recipeController) CreateRecipe(ctx *gin.Context) {
 // @Param images formData file true "Images of the recipe"
 // @Param tag_names formData string true "Tag names in JSON array format"
 // @Success 200 {object} models.Recipe
+// @Security ApiKeyAuth
 // @Router /api/recipes/{id} [put]
 func (c *recipeController) UpdateRecipe(ctx *gin.Context) {
 	id, err := strconv.ParseUint(ctx.Param("id"), 10, 64)
@@ -185,8 +189,11 @@ func (c *recipeController) UpdateRecipe(ctx *gin.Context) {
 // @Description Deletes a recipe by ID.
 // @Tags recipes
 // @Produce json
+// @Param Authorization header string true "Bearer Token"
 // @Param id path int true "Recipe ID"
 // @Success 204 {object} nil
+// @Failure 500 {object} "error"
+// @Security ApiKeyAuth
 // @Router /api/recipes/{id} [delete]
 func (c *recipeController) DeleteRecipe(ctx *gin.Context) {
 	id, err := strconv.ParseUint(ctx.Param("id"), 10, 64)
