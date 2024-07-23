@@ -563,6 +563,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Creates a new recipe with the provided details.",
                 "consumes": [
                     "multipart/form-data"
@@ -575,6 +580,13 @@ const docTemplate = `{
                 ],
                 "summary": "Create a new recipe",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer Token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "Title of the recipe",
@@ -657,6 +669,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Updates an existing recipe with the provided details.",
                 "consumes": [
                     "multipart/form-data"
@@ -669,6 +686,13 @@ const docTemplate = `{
                 ],
                 "summary": "Update an existing recipe",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer Token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "Recipe ID",
@@ -729,6 +753,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Deletes a recipe by ID.",
                 "produces": [
                     "application/json"
@@ -738,6 +767,13 @@ const docTemplate = `{
                 ],
                 "summary": "Delete a recipe",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer Token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "Recipe ID",

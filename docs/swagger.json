@@ -556,6 +556,11 @@
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Creates a new recipe with the provided details.",
                 "consumes": [
                     "multipart/form-data"
@@ -568,6 +573,13 @@
                 ],
                 "summary": "Create a new recipe",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer Token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "string",
                         "description": "Title of the recipe",
@@ -650,6 +662,11 @@
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Updates an existing recipe with the provided details.",
                 "consumes": [
                     "multipart/form-data"
@@ -662,6 +679,13 @@
                 ],
                 "summary": "Update an existing recipe",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer Token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "Recipe ID",
@@ -722,6 +746,11 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Deletes a recipe by ID.",
                 "produces": [
                     "application/json"
@@ -731,6 +760,13 @@
                 ],
                 "summary": "Delete a recipe",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer Token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "Recipe ID",

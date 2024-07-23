@@ -192,7 +192,6 @@ func (c *recipeController) UpdateRecipe(ctx *gin.Context) {
 // @Param Authorization header string true "Bearer Token"
 // @Param id path int true "Recipe ID"
 // @Success 204 {object} nil
-// @Failure 500 {object} "error"
 // @Security ApiKeyAuth
 // @Router /api/recipes/{id} [delete]
 func (c *recipeController) DeleteRecipe(ctx *gin.Context) {

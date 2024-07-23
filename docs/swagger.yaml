@@ -549,6 +549,11 @@ paths:
       - multipart/form-data
       description: Creates a new recipe with the provided details.
       parameters:
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: Title of the recipe
         in: formData
         name: title
@@ -586,6 +591,8 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/models.Recipe'
+      security:
+      - ApiKeyAuth: []
       summary: Create a new recipe
       tags:
       - recipes
@@ -593,6 +600,11 @@ paths:
     delete:
       description: Deletes a recipe by ID.
       parameters:
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: Recipe ID
         in: path
         name: id
@@ -603,6 +615,8 @@ paths:
       responses:
         "204":
           description: No Content
+      security:
+      - ApiKeyAuth: []
       summary: Delete a recipe
       tags:
       - recipes
@@ -629,6 +643,11 @@ paths:
       - multipart/form-data
       description: Updates an existing recipe with the provided details.
       parameters:
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: Recipe ID
         in: path
         name: id
@@ -671,6 +690,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.Recipe'
+      security:
+      - ApiKeyAuth: []
       summary: Update an existing recipe
       tags:
       - recipes
