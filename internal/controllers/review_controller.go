@@ -4,6 +4,7 @@ import (
 	"api-culinary-review/internal/models"
 	"api-culinary-review/internal/usecases"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -58,8 +59,13 @@ func (ctrl *reviewController) GetAllReviews(c *gin.Context) {
 // @Failure 500 {object} map[string]interface{}
 // @Router /api/reviews/{id} [get]
 func (ctrl *reviewController) GetReviewByID(c *gin.Context) {
-	id := c.Param("id")
-	review, err := ctrl.uc.GetReviewByID(c.GetUint(id))
+	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	review, err := ctrl.uc.GetReviewByID(uint(id))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

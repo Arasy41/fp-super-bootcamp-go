@@ -39,7 +39,7 @@ func (r *recipeRepository) GetRecipeByID(id uint) (*models.Recipe, error) {
 
 func (r *recipeRepository) GetRecipes() ([]*models.Recipe, error) {
 	var recipes []*models.Recipe
-	err := r.db.Find(&recipes).Error
+	err := r.db.Find(&recipes).Preload("Tags").Preload("Images").Error
 	return recipes, err
 }
 
