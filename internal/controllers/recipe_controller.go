@@ -98,15 +98,26 @@ func (c *recipeController) CreateRecipe(ctx *gin.Context) {
 		imageUrls = append(imageUrls, uploadedImage)
 	}
 
+	userID, exists := ctx.Get("userID")
+	if !exists {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+	userIDUint, ok := userID.(uint)
+	if !ok {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse user ID"})
+		return
+	}
+
 	// Populate recipeRequest struct
 	recipeRequest.Title = title
 	recipeRequest.Description = description
 	recipeRequest.Ingredients = ingredients
 	recipeRequest.Instructions = instructions
-	recipeRequest.Images = images // Set URLs of uploaded images
-	recipeRequest.TagIDs = tagIDs // Set tag IDs
+	recipeRequest.Images = images
+	recipeRequest.TagIDs = tagIDs
 
-	recipe, err := c.recipeUsecase.CreateRecipe(recipeRequest.Images, recipeRequest)
+	recipe, err := c.recipeUsecase.CreateRecipe(recipeRequest.Images, recipeRequest, userIDUint)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -207,7 +218,7 @@ func (c *recipeController) DeleteRecipe(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusNoContent, gin.H{
+	ctx.JSON(http.StatusOK, gin.H{
 		"message": "Recipe deleted successfully",
 	})
 }

@@ -10,7 +10,7 @@ import (
 )
 
 type RecipeUsecase interface {
-	CreateRecipe(images []*multipart.FileHeader, recipe *models.RecipeRequest) (*models.Recipe, error)
+	CreateRecipe(images []*multipart.FileHeader, recipe *models.RecipeRequest, userID uint) (*models.Recipe, error)
 	GetRecipeByID(id uint) (*models.Recipe, error)
 	GetRecipes() ([]*models.Recipe, error)
 	UpdateRecipe(id uint, images []*multipart.FileHeader, recipe *models.RecipeRequest) (*models.Recipe, error)
@@ -33,12 +33,13 @@ func (r *recipeUsecase) GetRecipes() ([]*models.Recipe, error) {
 	return r.recipeRepository.GetRecipes()
 }
 
-func (r *recipeUsecase) CreateRecipe(images []*multipart.FileHeader, recipe *models.RecipeRequest) (*models.Recipe, error) {
+func (r *recipeUsecase) CreateRecipe(images []*multipart.FileHeader, recipe *models.RecipeRequest, userID uint) (*models.Recipe, error) {
 	newRecipe := &models.Recipe{
 		Title:        recipe.Title,
 		Description:  recipe.Description,
 		Ingredients:  recipe.Ingredients,
 		Instructions: recipe.Instructions,
+		UserID:       userID,
 	}
 
 	// Create recipe first to get a valid ID
@@ -60,7 +61,7 @@ func (r *recipeUsecase) CreateRecipe(images []*multipart.FileHeader, recipe *mod
 		}
 
 		// Tambahkan URL gambar ke dalam resep
-		newRecipe.Images = append(newRecipe.Images, models.Image{URL: uploadedImage, RecipeID: newRecipe.ID})
+		newRecipe.Images = append(newRecipe.Images, models.Image{URL: uploadedImage, RecipeID: createdRecipe.ID})
 	}
 
 	return r.recipeRepository.UpdateRecipe(createdRecipe)
