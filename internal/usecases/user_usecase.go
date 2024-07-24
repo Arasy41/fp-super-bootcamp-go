@@ -16,12 +16,14 @@ type UserUsecase interface {
 }
 
 type userUsecase struct {
-	UserRepository repositories.UserRepository
+	UserRepository    repositories.UserRepository
+	ProfileRepository repositories.ProfileRepository
 }
 
-func NewUserUsecase(userRepo repositories.UserRepository) UserUsecase {
+func NewUserUsecase(userRepo repositories.UserRepository, profileRepo repositories.ProfileRepository) UserUsecase {
 	return &userUsecase{
-		UserRepository: userRepo,
+		UserRepository:    userRepo,
+		ProfileRepository: profileRepo,
 	}
 }
 
@@ -39,6 +41,16 @@ func (uc *userUsecase) CreateUser(username, password, email string) (*models.Use
 	}
 
 	err = uc.UserRepository.Create(user)
+	if err != nil {
+		return nil, err
+	}
+
+	profile := models.Profile{
+		UserID:   user.ID,
+		FullName: username,
+	}
+
+	err = uc.ProfileRepository.CreateProfile(&profile)
 	if err != nil {
 		return nil, err
 	}

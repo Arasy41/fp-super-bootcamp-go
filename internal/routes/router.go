@@ -28,13 +28,12 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 
 	router.Use(cors.New(corsConfig))
 
-	userRepo := repositories.NewUserRepository(db)
-	userUc := usecases.NewUserUsecase(userRepo)
-	userCtrl := controllers.NewUserController(userUc)
-
 	profileRepo := repositories.NewProfileRepository(db)
 	profileUc := usecases.NewProfileUsecase(profileRepo)
 	profileCtrl := controllers.NewProfileController(profileUc)
+	userRepo := repositories.NewUserRepository(db)
+	userUc := usecases.NewUserUsecase(userRepo, profileRepo)
+	userCtrl := controllers.NewUserController(userUc)
 
 	tagRepo := repositories.NewTagRepository(db)
 	tagUc := usecases.NewtagUsecase(tagRepo)
