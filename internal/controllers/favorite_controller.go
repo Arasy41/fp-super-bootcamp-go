@@ -20,33 +20,33 @@ type favoriteController struct {
 	favoriteUsecase usecases.FavoriteUsecase
 }
 
-// NewFavoriteController creates a new instance of FavoriteController.
 func NewFavoriteController(favoriteUC usecases.FavoriteUsecase) FavoriteController {
 	return &favoriteController{
 		favoriteUsecase: favoriteUC,
 	}
 }
 
-// GetByUserID retrieves favorites by user ID.
-// @Summary Retrieve favorites by user ID
-// @Description Retrieves favorites associated with the specified user ID.
+// GetByUserID retrieves favorites for the authenticated user.
+// @Summary Retrieve favorites for the authenticated user
+// @Description Retrieves favorites associated with the authenticated user.
 // @Tags favorites
 // @Accept json
 // @Produce json
-// @Param user_id path int true "User ID"
+// @Param Authorization header string true "Bearer Token"
 // @Success 200 {array} models.Favorite
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/favorites/{user_id} [get]
+// @Security ApiKeyAuth
+// @Router /api/favorites [get]
 func (ctrl *favoriteController) GetByUserID(c *gin.Context) {
-	userIDStr := c.Param("user_id")
-	userID, err := strconv.ParseUint(userIDStr, 10, 32)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, ErrorResponse{Error: "Invalid user ID"})
+	// Extract user ID from context (assuming it's set by a middleware)
+	userID, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusBadRequest, ErrorResponse{Error: "User ID not found in context"})
 		return
 	}
 
-	favorites, err := ctrl.favoriteUsecase.GetByUserID(uint(userID))
+	favorites, err := ctrl.favoriteUsecase.GetByUserID(userID.(uint))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, ErrorResponse{Error: err.Error()})
 		return
@@ -61,19 +61,29 @@ func (ctrl *favoriteController) GetByUserID(c *gin.Context) {
 // @Tags favorites
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer Token"
 // @Param input body models.FavoriteRequest true "Favorite data to create"
 // @Success 201 {object} models.Favorite
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
+// @Security ApiKeyAuth
 // @Router /api/favorites [post]
 func (ctrl *favoriteController) CreateFavorite(c *gin.Context) {
+	// Extract user ID from context (assuming it's set by a middleware)
+	userID, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusBadRequest, ErrorResponse{Error: "User ID not found in context"})
+		return
+	}
+
 	var favoriteInput models.FavoriteRequest
 	if err := c.ShouldBindJSON(&favoriteInput); err != nil {
 		c.JSON(http.StatusBadRequest, ErrorResponse{Error: err.Error()})
 		return
 	}
 
-	favorite, err := ctrl.favoriteUsecase.CreateFavorite(favoriteInput.UserID, favoriteInput.RecipeID)
+	// Create favorite using userID from context
+	favorite, err := ctrl.favoriteUsecase.CreateFavorite(userID.(uint), favoriteInput.RecipeID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, ErrorResponse{Error: err.Error()})
 		return
@@ -86,10 +96,12 @@ func (ctrl *favoriteController) CreateFavorite(c *gin.Context) {
 // @Summary Delete a favorite by ID
 // @Description Deletes a favorite by its ID.
 // @Tags favorites
+// @Param Authorization header string true "Bearer Token"
 // @Param id path int true "Favorite ID"
 // @Success 200 {string} string "Favorite deleted successfully"
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
+// @Security ApiKeyAuth
 // @Router /api/favorites/{id} [delete]
 func (ctrl *favoriteController) DeleteFavorite(c *gin.Context) {
 	idStr := c.Param("id")

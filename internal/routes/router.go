@@ -69,9 +69,9 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 		authGroup.PUT("/reviews/:id", reviewCtrl.UpdateReviewByID)
 		authGroup.DELETE("/reviews/:id", reviewCtrl.DeleteReviewByID)
 
-		authGroup.POST("/favorite-recipe", favoriteCtrl.CreateFavorite)
-		authGroup.GET("/favorite-recipe", favoriteCtrl.GetByUserID)
-		authGroup.DELETE("/favorite-recipe", favoriteCtrl.DeleteFavorite)
+		authGroup.POST("/favorites", favoriteCtrl.CreateFavorite)
+		authGroup.GET("/favorites", favoriteCtrl.GetByUserID)
+		authGroup.DELETE("/favorites/:id", favoriteCtrl.DeleteFavorite)
 
 		authGroup.POST("tags", tagCtrl.CreateTag)
 		authGroup.PUT("/tags/:id", tagCtrl.UpdateTag)

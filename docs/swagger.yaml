@@ -102,6 +102,10 @@ definitions:
         type: string
       updated_at:
         type: string
+      user:
+        $ref: '#/definitions/models.User'
+      user_id:
+        type: integer
     type: object
   models.Review:
     properties:
@@ -159,6 +163,31 @@ definitions:
         type: integer
       name:
         type: string
+    type: object
+  models.User:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      favorites:
+        items:
+          $ref: '#/definitions/models.Favorite'
+        type: array
+      id:
+        type: integer
+      profile:
+        $ref: '#/definitions/models.Profile'
+      reviews:
+        items:
+          $ref: '#/definitions/models.Review'
+        type: array
+      updated_at:
+        type: string
+      username:
+        type: string
+    required:
+    - email
     type: object
   models.UserRequest:
     properties:
@@ -267,11 +296,48 @@ paths:
       tags:
       - users
   /api/favorites:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves favorites associated with the authenticated user.
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Favorite'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Retrieve favorites for the authenticated user
+      tags:
+      - favorites
     post:
       consumes:
       - application/json
       description: Creates a new favorite for a user with the specified recipe ID.
       parameters:
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: Favorite data to create
         in: body
         name: input
@@ -293,6 +359,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/controllers.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: Create a new favorite
       tags:
       - favorites
@@ -300,6 +368,11 @@ paths:
     delete:
       description: Deletes a favorite by its ID.
       parameters:
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
       - description: Favorite ID
         in: path
         name: id
@@ -318,38 +391,9 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/controllers.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: Delete a favorite by ID
-      tags:
-      - favorites
-  /api/favorites/{user_id}:
-    get:
-      consumes:
-      - application/json
-      description: Retrieves favorites associated with the specified user ID.
-      parameters:
-      - description: User ID
-        in: path
-        name: user_id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/models.Favorite'
-            type: array
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/controllers.ErrorResponse'
-      summary: Retrieve favorites by user ID
       tags:
       - favorites
   /api/login:
