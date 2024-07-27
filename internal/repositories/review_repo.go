@@ -26,7 +26,7 @@ func NewReviewRepository(db *gorm.DB) ReviewRepository {
 
 func (repo *reviewRepository) FindAll() ([]models.Review, error) {
 	var reviews []models.Review
-	err := repo.db.Preload("User").Preload("Recipe").Find(&reviews).Error
+	err := repo.db.Preload("User.Profile").Preload("Recipe.User").Find(&reviews).Error
 	return reviews, err
 }
 
