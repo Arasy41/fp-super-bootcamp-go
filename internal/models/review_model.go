@@ -10,7 +10,7 @@ type Review struct {
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 	User      User      `gorm:"foreignKey:UserID" json:"user" swaggerignore:"true"`
-	Recipe    Recipe    `gorm:"foreignKey:RecipeID" json:"review" swaggerignore:"true"`
+	Recipe    Recipe    `gorm:"foreignKey:RecipeID" json:"recipe" swaggerignore:"true"`
 }
 
 type ReviewRequest struct {
