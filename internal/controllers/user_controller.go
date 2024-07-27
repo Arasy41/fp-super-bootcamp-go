@@ -47,11 +47,22 @@ func (ctrl *userController) Register(c *gin.Context) {
 		return
 	}
 
+	existingUser, err := ctrl.UserUsecase.GetUserByEmailOrUsername(userInput.Email)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	if existingUser != nil {
+		c.JSON(http.StatusConflict, gin.H{"error": "Email already registered"})
+	}
+
 	user, err := ctrl.UserUsecase.CreateUser(userInput.Username, userInput.Password, userInput.Email)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+
 	c.JSON(http.StatusCreated, gin.H{
 		"message":  "User registered successfully",
 		"username": user.Username,
