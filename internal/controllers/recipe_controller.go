@@ -223,28 +223,31 @@ func (c *recipeController) DeleteRecipe(ctx *gin.Context) {
 	})
 }
 
-// GetRecipeByID retrieves a recipe by its ID.
-// @Summary Get a recipe by ID
-// @Description Retrieves a recipe by its ID.
+// GetRecipeByID godoc
+// @Summary Get recipe by ID
+// @Description Get a recipe along with its related models by ID
 // @Tags recipes
+// @Accept json
 // @Produce json
 // @Param id path int true "Recipe ID"
 // @Success 200 {object} models.Recipe
+// @Failure 404 {object} map[string]string
 // @Router /api/recipes/{id} [get]
-func (c *recipeController) GetRecipeByID(ctx *gin.Context) {
-	id, err := strconv.ParseUint(ctx.Param("id"), 10, 64)
+func (ctrl *recipeController) GetRecipeByID(c *gin.Context) {
+	idStr := c.Param("id")
+	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid recipe ID"})
 		return
 	}
 
-	recipe, err := c.recipeUsecase.GetRecipeByID(uint(id))
+	recipe, err := ctrl.recipeUsecase.GetRecipeByID(uint(id))
 	if err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"error": "Recipe not found"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "Recipe not found"})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, recipe)
+	c.JSON(http.StatusOK, recipe)
 }
 
 // GetRecipes retrieves all recipes.

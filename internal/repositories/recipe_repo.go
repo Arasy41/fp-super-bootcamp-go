@@ -33,8 +33,15 @@ func (r *recipeRepository) CreateRecipe(recipe *models.Recipe) (*models.Recipe, 
 
 func (r *recipeRepository) GetRecipeByID(id uint) (*models.Recipe, error) {
 	var recipe models.Recipe
-	err := r.db.Where("id = ?", id).Preload("Tags").Preload("Images").Preload("Reviews").First(&recipe).Error
-	return &recipe, err
+	err := r.db.Preload("User").
+		Preload("Tags").
+		Preload("Images").
+		Preload("Reviews").
+		First(&recipe, id).Error
+	if err != nil {
+		return nil, err
+	}
+	return &recipe, nil
 }
 
 func (r *recipeRepository) GetRecipes() ([]*models.Recipe, error) {
