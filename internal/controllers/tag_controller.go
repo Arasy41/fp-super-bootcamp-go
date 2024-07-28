@@ -34,10 +34,12 @@ func NewTagController(tagUsecase usecases.TagUsecase) TagController {
 // @Tags tags
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer Token"
 // @Param input body models.TagRequest true "Tag data to create"
 // @Success 201 {object} models.TagResponse
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
+// @Security ApiKeyAuth
 // @Router /api/tags [post]
 func (ctrl *tagController) CreateTag(c *gin.Context) {
 	var tagInput models.TagRequest
@@ -61,8 +63,10 @@ func (ctrl *tagController) CreateTag(c *gin.Context) {
 // @Tags tags
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer Token"
 // @Success 200 {array} models.Tag
 // @Failure 500 {object} ErrorResponse
+// @Security ApiKeyAuth
 // @Router /api/tags [get]
 func (ctrl *tagController) GetAllTags(c *gin.Context) {
 	tags, err := ctrl.tagUsecase.GetAllTags()
@@ -80,11 +84,13 @@ func (ctrl *tagController) GetAllTags(c *gin.Context) {
 // @Tags tags
 // @Accept json
 // @Produce json
+// @Param Authorization header string true "Bearer Token"
 // @Param id path int true "Tag ID to update"
 // @Param input body models.TagRequest true "Updated tag data"
 // @Success 200 {string} string "Tag updated successfully"
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
+// @Security ApiKeyAuth
 // @Router /api/tags/{id} [put]
 func (ctrl *tagController) UpdateTag(c *gin.Context) {
 	tagID := c.Param("id")
@@ -119,10 +125,12 @@ func (ctrl *tagController) UpdateTag(c *gin.Context) {
 // @Summary Delete a tag by ID
 // @Description Deletes a tag by its ID.
 // @Tags tags
+// @Param Authorization header string true "Bearer Token"
 // @Param id path int true "Tag ID to delete"
 // @Success 200 {string} string "Tag deleted successfully"
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
+// @Security ApiKeyAuth
 // @Router /api/tags/{id} [delete]
 func (ctrl *tagController) DeleteTag(c *gin.Context) {
 	tagID := c.Param("id")

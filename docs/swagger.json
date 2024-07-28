@@ -1132,6 +1132,11 @@
         },
         "/api/tags": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get a list of all tags",
                 "consumes": [
                     "application/json"
@@ -1143,6 +1148,15 @@
                     "tags"
                 ],
                 "summary": "Get all tags",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer Token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1162,6 +1176,11 @@
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Creates a new tag with the provided name.",
                 "consumes": [
                     "application/json"
@@ -1174,6 +1193,13 @@
                 ],
                 "summary": "Create a new tag",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer Token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "description": "Tag data to create",
                         "name": "input",
@@ -1208,6 +1234,11 @@
         },
         "/api/tags/{id}": {
             "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Updates an existing tag based on the provided data.",
                 "consumes": [
                     "application/json"
@@ -1220,6 +1251,13 @@
                 ],
                 "summary": "Update an existing tag",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer Token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "Tag ID to update",
@@ -1259,12 +1297,24 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Deletes a tag by its ID.",
                 "tags": [
                     "tags"
                 ],
                 "summary": "Delete a tag by ID",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer Token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "Tag ID to delete",

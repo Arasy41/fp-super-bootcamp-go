@@ -1139,6 +1139,11 @@ const docTemplate = `{
         },
         "/api/tags": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get a list of all tags",
                 "consumes": [
                     "application/json"
@@ -1150,6 +1155,15 @@ const docTemplate = `{
                     "tags"
                 ],
                 "summary": "Get all tags",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer Token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1169,6 +1183,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Creates a new tag with the provided name.",
                 "consumes": [
                     "application/json"
@@ -1181,6 +1200,13 @@ const docTemplate = `{
                 ],
                 "summary": "Create a new tag",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer Token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "description": "Tag data to create",
                         "name": "input",
@@ -1215,6 +1241,11 @@ const docTemplate = `{
         },
         "/api/tags/{id}": {
             "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Updates an existing tag based on the provided data.",
                 "consumes": [
                     "application/json"
@@ -1227,6 +1258,13 @@ const docTemplate = `{
                 ],
                 "summary": "Update an existing tag",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer Token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "Tag ID to update",
@@ -1266,12 +1304,24 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Deletes a tag by its ID.",
                 "tags": [
                     "tags"
                 ],
                 "summary": "Delete a tag by ID",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer Token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
                     {
                         "type": "integer",
                         "description": "Tag ID to delete",
