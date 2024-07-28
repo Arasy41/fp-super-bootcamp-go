@@ -3,6 +3,7 @@ package usecases
 import (
 	"api-culinary-review/internal/models"
 	"api-culinary-review/internal/repositories"
+	"errors"
 	"time"
 )
 
@@ -47,5 +48,13 @@ func (uc *reviewUsecase) UpdateReviewByID(req *models.ReviewRequest, id uint) er
 }
 
 func (uc *reviewUsecase) DeleteReviewByID(id uint) error {
-	return uc.repo.DeleteByID(id)
+	review, err := uc.repo.FindByID(id)
+	if err != nil {
+		return err
+	}
+	if review == nil {
+		return errors.New("review not found")
+	}
+
+	return uc.repo.DeleteReviewByID(id)
 }

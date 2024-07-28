@@ -198,9 +198,13 @@ func (ctrl *reviewController) UpdateReviewByID(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Router /api/reviews/{id} [delete]
 func (ctrl *reviewController) DeleteReviewByID(c *gin.Context) {
-	id := c.Param("id")
+	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid review ID"})
+		return
+	}
 
-	if err := ctrl.uc.DeleteReviewByID(c.GetUint(id)); err != nil {
+	if err := ctrl.uc.DeleteReviewByID(uint(id)); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

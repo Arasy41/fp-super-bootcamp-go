@@ -11,7 +11,7 @@ type ReviewRepository interface {
 	FindByID(id uint) (*models.Review, error)
 	Create(req *models.ReviewRequest) (*models.Review, error)
 	UpdateReviewByID(review *models.Review, id uint) error
-	DeleteByID(id uint) error
+	DeleteReviewByID(id uint) error
 }
 
 type reviewRepository struct {
@@ -32,7 +32,10 @@ func (repo *reviewRepository) FindAll() ([]models.Review, error) {
 
 func (repo *reviewRepository) FindByID(id uint) (*models.Review, error) {
 	var review models.Review
-	if err := repo.db.Preload("User").First(&review, id).Error; err != nil {
+	if err := repo.db.First(&review, id).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, nil
+		}
 		return nil, err
 	}
 	return &review, nil
@@ -52,6 +55,9 @@ func (repo *reviewRepository) UpdateReviewByID(review *models.Review, id uint) e
 	return repo.db.Model(&models.Review{}).Where("id = ?", id).Updates(review).Error
 }
 
-func (repo *reviewRepository) DeleteByID(id uint) error {
-	return repo.db.Delete(&models.Review{}).Where("id = ?", id).Error
+func (repo *reviewRepository) DeleteReviewByID(id uint) error {
+	if err := repo.db.Delete(&models.Review{}, id).Error; err != nil {
+		return err
+	}
+	return nil
 }
