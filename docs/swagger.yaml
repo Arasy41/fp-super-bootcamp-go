@@ -665,7 +665,9 @@ paths:
       tags:
       - recipes
     get:
-      description: Retrieves a recipe by its ID.
+      consumes:
+      - application/json
+      description: Get a recipe along with its related models by ID
       parameters:
       - description: Recipe ID
         in: path
@@ -679,7 +681,13 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.Recipe'
-      summary: Get a recipe by ID
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get recipe by ID
       tags:
       - recipes
     put:
@@ -930,6 +938,11 @@ paths:
           schema:
             additionalProperties: true
             type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
         "500":
           description: Internal Server Error
           schema:
@@ -941,6 +954,26 @@ paths:
       tags:
       - reviews
   /api/tags:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves all tags from the database.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.TagResponse'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.ErrorResponse'
+      summary: Get all tags
+      tags:
+      - tags
     post:
       consumes:
       - application/json

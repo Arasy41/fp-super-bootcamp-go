@@ -54,6 +54,25 @@ func (ctrl *tagController) CreateTag(c *gin.Context) {
 	c.JSON(http.StatusCreated, tag)
 }
 
+// GetAllTags retrieves all tags.
+// @Summary Get all tags
+// @Description Retrieves all tags from the database.
+// @Tags tags
+// @Accept json
+// @Produce json
+// @Success 200 {array} models.TagResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /api/tags [get]
+func (ctrl *tagController) GetAllTags(c *gin.Context) {
+	tags, err := ctrl.tagUsecase.GetAllTags()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, ErrorResponse{Error: err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": tags})
+}
+
 // UpdateTag updates an existing tag.
 // @Summary Update an existing tag
 // @Description Updates an existing tag based on the provided data.

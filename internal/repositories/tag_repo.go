@@ -8,6 +8,7 @@ import (
 
 type TagRepository interface {
 	Create(tag *models.Tag) error
+	GetAllTags() ([]models.Tag, error)
 	GetTagsByNames(names []string) ([]models.Tag, error)
 	Update(tag *models.Tag) error
 	Delete(id uint) error
@@ -23,6 +24,12 @@ func NewTagRepository(db *gorm.DB) TagRepository {
 
 func (repo *tagRepository) Create(tag *models.Tag) error {
 	return repo.DB.Create(tag).Error
+}
+
+func (repo *tagRepository) GetAllTags() ([]models.Tag, error) {
+	var tags []models.Tag
+	err := repo.DB.Preload("Recipes").Find(tags).Error
+	return tags, err
 }
 
 func (r *tagRepository) GetTagsByNames(names []string) ([]models.Tag, error) {

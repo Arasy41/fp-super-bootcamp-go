@@ -7,6 +7,7 @@ import (
 
 type TagUsecase interface {
 	CreateTag(name string) (*models.Tag, error)
+	GetAllTags() ([]models.Tag, error)
 	GetTagsByNames(tagNames []string) ([]models.Tag, error)
 	UpdateTag(tag *models.Tag) error
 	DeleteTag(id uint) error
@@ -33,6 +34,10 @@ func (uc *tagUsecase) CreateTag(name string) (*models.Tag, error) {
 	}
 
 	return tag, nil
+}
+
+func (uc *tagUsecase) GetAllTags() ([]models.Tag, error) {
+	return uc.TagRepository.GetAllTags()
 }
 
 func (uc *tagUsecase) GetTagsByNames(tagNames []string) ([]models.Tag, error) {
