@@ -11,6 +11,7 @@ import (
 
 // TagController is the interface that defines the methods for handling tag-related operations.
 type TagController interface {
+	GetAllTags(c *gin.Context)
 	CreateTag(c *gin.Context)
 	UpdateTag(c *gin.Context)
 	DeleteTag(c *gin.Context)
@@ -54,23 +55,23 @@ func (ctrl *tagController) CreateTag(c *gin.Context) {
 	c.JSON(http.StatusCreated, tag)
 }
 
-// GetAllTags retrieves all tags.
+// GetAllTags godoc
 // @Summary Get all tags
-// @Description Retrieves all tags from the database.
+// @Description Get a list of all tags
 // @Tags tags
 // @Accept json
 // @Produce json
-// @Success 200 {array} models.TagResponse
+// @Success 200 {array} models.Tag
 // @Failure 500 {object} ErrorResponse
 // @Router /api/tags [get]
 func (ctrl *tagController) GetAllTags(c *gin.Context) {
 	tags, err := ctrl.tagUsecase.GetAllTags()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, ErrorResponse{Error: err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": tags})
+	c.JSON(http.StatusOK, tags)
 }
 
 // UpdateTag updates an existing tag.

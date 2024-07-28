@@ -28,8 +28,10 @@ func (repo *tagRepository) Create(tag *models.Tag) error {
 
 func (repo *tagRepository) GetAllTags() ([]models.Tag, error) {
 	var tags []models.Tag
-	err := repo.DB.Preload("Recipes").Find(tags).Error
-	return tags, err
+	if err := repo.DB.Find(&tags).Error; err != nil {
+		return nil, err
+	}
+	return tags, nil
 }
 
 func (r *tagRepository) GetTagsByNames(names []string) ([]models.Tag, error) {

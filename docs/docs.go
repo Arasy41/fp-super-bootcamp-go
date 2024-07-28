@@ -1139,7 +1139,7 @@ const docTemplate = `{
         },
         "/api/tags": {
             "get": {
-                "description": "Retrieves all tags from the database.",
+                "description": "Get a list of all tags",
                 "consumes": [
                     "application/json"
                 ],
@@ -1156,7 +1156,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.TagResponse"
+                                "$ref": "#/definitions/models.Tag"
                             }
                         }
                     },
