@@ -184,7 +184,7 @@ func (c *recipeController) UpdateRecipe(ctx *gin.Context) {
 	recipeRequest.Description = description
 	recipeRequest.Ingredients = ingredients
 	recipeRequest.Instructions = instructions
-	recipeRequest.TagIDs = tagIDs // Set tag IDs
+	recipeRequest.TagIDs = tagIDs
 
 	recipe, err := c.recipeUsecase.UpdateRecipe(uint(id), images, recipeRequest)
 	if err != nil {

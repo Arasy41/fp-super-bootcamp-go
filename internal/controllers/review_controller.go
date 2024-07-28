@@ -132,19 +132,52 @@ func (ctrl *reviewController) CreateReview(c *gin.Context) {
 // @Param review body models.ReviewRequest true "Review Request"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400 {object} map[string]interface{}
+// @Failure 401 {object} map[string]interface{}
 // @Failure 500 {object} map[string]interface{}
 // @Security ApiKeyAuth
 // @Router /api/reviews/{id} [put]
 func (ctrl *reviewController) UpdateReviewByID(c *gin.Context) {
 	var req models.ReviewRequest
+
+	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid review ID"})
+		return
+	}
+
+	userID, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+
+	userIDUint, ok := userID.(uint)
+	if !ok {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse user ID"})
+		return
+	}
+
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	id := c.Param("id")
+	// Ensure the user is updating their own review
+	review, err := ctrl.uc.GetReviewByID(uint(id))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 
-	if err := ctrl.uc.UpdateReviewByID(&req, c.GetUint(id)); err != nil {
+	if review.UserID != userIDUint {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "You can only update your own review"})
+		return
+	}
+
+	req.UserID = userIDUint
+	req.RecipeID = review.RecipeID
+
+	if err := ctrl.uc.UpdateReviewByID(&req, uint(id)); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

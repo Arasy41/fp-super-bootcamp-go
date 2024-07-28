@@ -33,10 +33,10 @@ func (r *recipeRepository) CreateRecipe(recipe *models.Recipe) (*models.Recipe, 
 
 func (r *recipeRepository) GetRecipeByID(id uint) (*models.Recipe, error) {
 	var recipe models.Recipe
-	err := r.db.Preload("User").
+	err := r.db.Preload("User.Profile").
 		Preload("Tags").
 		Preload("Images").
-		Preload("Reviews.User").
+		Preload("Reviews.User.Profile").
 		First(&recipe, id).Error
 	if err != nil {
 		return nil, err

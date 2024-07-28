@@ -3,6 +3,7 @@ package usecases
 import (
 	"api-culinary-review/internal/models"
 	"api-culinary-review/internal/repositories"
+	"time"
 )
 
 type ReviewUsecase interface {
@@ -36,7 +37,13 @@ func (uc *reviewUsecase) CreateReview(req *models.ReviewRequest) (*models.Review
 }
 
 func (uc *reviewUsecase) UpdateReviewByID(req *models.ReviewRequest, id uint) error {
-	return uc.repo.UpdateByID(req, id)
+	review := &models.Review{
+		UserID:    req.UserID,
+		RecipeID:  req.RecipeID,
+		Content:   req.Content,
+		UpdatedAt: time.Now(),
+	}
+	return uc.repo.UpdateReviewByID(review, id)
 }
 
 func (uc *reviewUsecase) DeleteReviewByID(id uint) error {
