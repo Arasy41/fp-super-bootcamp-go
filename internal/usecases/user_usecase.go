@@ -11,6 +11,7 @@ type UserUsecase interface {
 	CreateUser(username, password, email string) (*models.User, error)
 	GetUserByID(id uint) (*models.User, error)
 	GetUserByEmailOrUsername(emailOrUsername string) (*models.User, error)
+	CheckUserEmail(email string) (*models.User, error)
 	UpdateUser(user *models.User) error
 	DeleteUser(id uint) error
 }
@@ -72,4 +73,8 @@ func (uc *userUsecase) DeleteUser(id uint) error {
 
 func (uc *userUsecase) GetUserByEmailOrUsername(emailOrUsername string) (*models.User, error) {
 	return uc.UserRepository.GetUserByEmailOrUsername(emailOrUsername)
+}
+
+func (uc *userUsecase) CheckUserEmail(email string) (*models.User, error) {
+	return uc.UserRepository.CheckUserEmail(email)
 }

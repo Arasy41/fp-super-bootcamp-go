@@ -11,6 +11,7 @@ type UserRepository interface {
 	FindByID(id uint) (*models.User, error)
 	Update(user *models.User) error
 	GetUserByEmailOrUsername(emailOrUsername string) (*models.User, error)
+	CheckUserEmail(email string) (*models.User, error)
 	Delete(id uint) error
 }
 
@@ -40,6 +41,17 @@ func (r *userRepository) GetUserByEmailOrUsername(emailOrUsername string) (*mode
 	var user models.User
 	err := r.DB.Where("email = ? OR username = ?", emailOrUsername, emailOrUsername).First(&user).Error
 	return &user, err
+}
+
+func (repo *userRepository) CheckUserEmail(email string) (*models.User, error) {
+	var user models.User
+	if err := repo.DB.Where("email = ?", email).First(&user).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return &user, nil
 }
 
 func (r *userRepository) Delete(id uint) error {
