@@ -1674,8 +1674,8 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "religious-mitzi-arasycorp-cc5d6628.koyeb.app",
-	BasePath:         "/api",
+	Host:             "screeching-joanna-arasycorp-919c2cee.koyeb.app",
+	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "API Culinary Review",
 	Description:      "This is a sample server for culinary review API.",

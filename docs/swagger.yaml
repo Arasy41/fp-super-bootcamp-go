@@ -1,4 +1,4 @@
-basePath: /api
+basePath: /
 definitions:
   controllers.ErrorResponse:
     properties:
@@ -202,7 +202,7 @@ definitions:
     - password
     - username
     type: object
-host: religious-mitzi-arasycorp-cc5d6628.koyeb.app
+host: screeching-joanna-arasycorp-919c2cee.koyeb.app
 info:
   contact:
     email: support@swagger.io

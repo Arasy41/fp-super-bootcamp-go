@@ -21,8 +21,8 @@ import (
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host religious-mitzi-arasycorp-cc5d6628.koyeb.app
-// @BasePath /api
+// @host screeching-joanna-arasycorp-919c2cee.koyeb.app
+// @BasePath /
 
 // @securityDefinitions.apikey ApiKeyAuth
 // @in header

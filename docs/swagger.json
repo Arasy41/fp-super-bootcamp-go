@@ -15,8 +15,8 @@
         },
         "version": "1.0"
     },
-    "host": "religious-mitzi-arasycorp-cc5d6628.koyeb.app",
-    "basePath": "/api",
+    "host": "screeching-joanna-arasycorp-919c2cee.koyeb.app",
+    "basePath": "/",
     "paths": {
         "/api/change-password": {
             "put": {
