@@ -1,0 +1,21 @@
+# Binary Files
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Go Vendor Directory
+/vendor/
+
+# Go Build Artifacts
+*.out
+
+# Database Config
+.env
+
+# Log Files
+*.log
+
+# IDE Directories
+.vscode/
+.idea/

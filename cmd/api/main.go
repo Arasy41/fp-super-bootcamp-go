@@ -34,10 +34,10 @@ func main() {
 	environment := helper.Getenv("ENVIRONMENT", "development")
 
 	//programmatically set swagger info
-	docs.SwaggerInfo.Title = "Movie REST API"
-	docs.SwaggerInfo.Description = "This is REST API Movie."
+	docs.SwaggerInfo.Title = "Culinary Review REST API"
+	docs.SwaggerInfo.Description = "This is REST API Culinary Review."
 	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = helper.Getenv("HOST", "religious-mitzi-arasycorp-cc5d6628.koyeb.app")
+	docs.SwaggerInfo.Host = helper.Getenv("HOST", "screeching-joanna-arasycorp-919c2cee.koyeb.app")
 	if environment == "development" {
 		docs.SwaggerInfo.Schemes = []string{"http", "https"}
 	} else {
